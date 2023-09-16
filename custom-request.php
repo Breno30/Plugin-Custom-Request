@@ -55,9 +55,17 @@ function add_requests_custom_fields_meta_box()
 function render_requests_custom_fields_meta_box($post)
 {
     $url_value = get_post_meta($post->ID, '_url_key', true);
+    $access_path_value = get_post_meta($post->ID, '_access_path_key', true);
+    $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
 ?>
     <label for="url">Url:</label>
-    <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" />
+    <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
+    
+    <label for="access_path">Object access path:</label>
+    <input type="text" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
+    
+    <label for="shortcut">Shortcut:</label>
+    <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
 <?php
 }
 
@@ -66,6 +74,16 @@ function save_requests_custom_fields($post_id)
     if (isset($_POST['url'])) {
         $url_value = sanitize_text_field($_POST['url']);
         update_post_meta($post_id, '_url_key', $url_value);
+    }
+
+    if (isset($_POST['access_path'])) {
+        $value = sanitize_text_field($_POST['access_path']);
+        update_post_meta($post_id, '_access_path_key', $value);
+    }
+
+    if (isset($_POST['shortcut'])) {
+        $value = sanitize_text_field($_POST['shortcut']);
+        update_post_meta($post_id, '_shortcut_key', $value);
     }
 }
 
