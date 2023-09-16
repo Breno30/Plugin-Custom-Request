@@ -60,10 +60,10 @@ function render_requests_custom_fields_meta_box($post)
 ?>
     <label for="url">Url:</label>
     <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
-    
+
     <label for="access_path">Object access path:</label>
     <input type="text" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
-    
+
     <label for="shortcut">Shortcut:</label>
     <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
 <?php
@@ -87,6 +87,41 @@ function save_requests_custom_fields($post_id)
     }
 }
 
+function replace_shortcut_content($content)
+{
+    $args = [
+        'post_type' => 'requests',
+        'posts_per_page' => -1,
+        'fields' => 'ids'
+    ];
+
+    $custom_post_ids = get_posts($args);
+
+    foreach ($custom_post_ids as $post_id) {
+
+        $url = get_post_meta($post_id, '_url_key', true);
+        $access_path = get_post_meta($post_id, '_access_path_key', true);
+        $access_path_list = explode(',', $access_path);
+        $shortcut = get_post_meta($post_id, '_shortcut_key', true);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $value = json_decode($response, true);
+        foreach ($access_path_list as $access_path_item) {
+            $value = $value[$access_path_item];
+        }
+
+        $content = str_replace($shortcut, $value, $content);
+    }
+
+    return $content;
+}
+
+add_filter('the_content', 'replace_shortcut_content');
 add_action('add_meta_boxes', 'add_requests_custom_fields_meta_box');
 add_action('save_post_requests', 'save_requests_custom_fields');
 add_action('init', 'create_requests_post_type');
