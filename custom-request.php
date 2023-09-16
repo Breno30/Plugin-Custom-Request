@@ -43,4 +43,32 @@ function create_requests_post_type()
     register_post_type('requests', $args);
 }
 
+function add_requests_custom_fields_meta_box()
+{
+    add_meta_box(
+        'requests_custom_fields',
+        'Custom Fields',
+        'render_requests_custom_fields_meta_box',
+    );
+}
+
+function render_requests_custom_fields_meta_box($post)
+{
+    $url_value = get_post_meta($post->ID, '_url_key', true);
+?>
+    <label for="url">Url:</label>
+    <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" />
+<?php
+}
+
+function save_requests_custom_fields($post_id)
+{
+    if (isset($_POST['url'])) {
+        $url_value = sanitize_text_field($_POST['url']);
+        update_post_meta($post_id, '_url_key', $url_value);
+    }
+}
+
+add_action('add_meta_boxes', 'add_requests_custom_fields_meta_box');
+add_action('save_post_requests', 'save_requests_custom_fields');
 add_action('init', 'create_requests_post_type');
