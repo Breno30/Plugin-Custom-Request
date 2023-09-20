@@ -71,7 +71,6 @@ function render_requests_custom_fields_meta_box($post)
     <hr>
 
     <h3>Answer</h3>
-
     <div class="custom-request__answer" id="custom-request__answer">
         <div class="subnivel">
             <div class="subnivel__line"> <button> Cool1:</button></div>
@@ -89,51 +88,6 @@ function render_requests_custom_fields_meta_box($post)
     <label for="shortcut">Shortcut:</label>
     <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
 
-    <script>
-
-        function createHTMLFromJSON(obj) {
-            let html = '<div class="subnivel">';
-            for (const key in obj) {
-                if (typeof obj[key] === 'object') {
-                    html += `
-                        <div class="subnivel__line">
-                            <button>${key}:</button>
-                        </div>
-                        <div class="subnivel">
-                            ${createHTMLFromJSON(obj[key])}
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <div class="subnivel__line">
-                            <button>${key}:</button><span>${obj[key]}</span>
-                        </div>
-                    `;
-                }
-            }
-            html += '</div>';
-
-            return html;
-        }
-        
-        let btn = document.getElementById('btn-send-request');
-        let requestAnswer = document.getElementById('custom-request__answer');
-
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            let url = document.getElementById('url').value;
-            fetch(url)
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-
-                    const resultHTML = createHTMLFromJSON(data);
-                    requestAnswer.innerHTML = resultHTML;
-                })
-        })
-    </script>
 <?php
 }
 
@@ -197,5 +151,6 @@ add_action('init', 'create_requests_post_type');
 function enqueue_admin_styles()
 {
     wp_enqueue_style('cusyom-request-style', plugin_dir_url(__FILE__) . 'style.css');
+    wp_enqueue_script('cusyom-request-script', plugin_dir_url(__FILE__) . 'script.js');
 }
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
