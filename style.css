@@ -1,0 +1,18 @@
+.custom-request__answer {
+    background-color: #f3f3f3;
+    padding: 15px 22px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #525252;
+}
+
+.custom-request__answer .subnivel {
+    padding-left: 20px;
+    gap: 10px;
+    display: grid;
+}
+
+.custom-request__answer .subnivel .subnivel__line {
+    display: flex;
+    gap: 10px;
+}

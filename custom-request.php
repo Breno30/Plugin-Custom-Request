@@ -58,14 +58,86 @@ function render_requests_custom_fields_meta_box($post)
     $access_path_value = get_post_meta($post->ID, '_access_path_key', true);
     $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
 ?>
+    <h3>Request</h3>
     <label for="url">Url:</label>
     <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
+    <br>
+    <select name="method" id="method">
+        <option value="get">GET</option>
+        <option value="post">POST</option>
+    </select>
+    <br>
+    <button id="btn-send-request">Test Request</button>
+    <hr>
+
+    <h3>Answer</h3>
+
+    <div class="custom-request__answer" id="custom-request__answer">
+        <div class="subnivel">
+            <div class="subnivel__line"> <button> Cool1:</button></div>
+            <div class="subnivel">
+                <div class="subnivel__line"><button> Cool2:</button><span>Oi</span></div>
+                <div class="subnivel__line"><button> Cool3:</button><span>Oi</span></div>
+            </div>
+        </div>
+    </div>
+
 
     <label for="access_path">Object access path:</label>
     <input type="text" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
 
     <label for="shortcut">Shortcut:</label>
     <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
+
+    <script>
+
+        function createHTMLFromJSON(obj) {
+            let html = '<div class="subnivel">';
+            for (const key in obj) {
+                if (typeof obj[key] === 'object') {
+                    html += `
+                        <div class="subnivel__line">
+                            <button>${key}:</button>
+                        </div>
+                        <div class="subnivel">
+                            ${createHTMLFromJSON(obj[key])}
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="subnivel__line">
+                            <button>${key}:</button><span>${obj[key]}</span>
+                        </div>
+                    `;
+                }
+            }
+            html += '</div>';
+
+            return html;
+        }
+
+       
+
+        
+        let btn = document.getElementById('btn-send-request');
+        let requestAnswer = document.getElementById('custom-request__answer');
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            let url = document.getElementById('url').value;
+            fetch(url)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data)
+
+                    const resultHTML = createHTMLFromJSON(data);
+                    requestAnswer.innerHTML = resultHTML;
+                })
+        })
+    </script>
 <?php
 }
 
@@ -125,3 +197,9 @@ add_filter('the_content', 'replace_shortcut_content');
 add_action('add_meta_boxes', 'add_requests_custom_fields_meta_box');
 add_action('save_post_requests', 'save_requests_custom_fields');
 add_action('init', 'create_requests_post_type');
+
+function enqueue_admin_styles()
+{
+    wp_enqueue_style('cusyom-request-style', plugin_dir_url(__FILE__) . 'style.css');
+}
+add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
