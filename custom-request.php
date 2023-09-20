@@ -115,9 +115,6 @@ function render_requests_custom_fields_meta_box($post)
 
             return html;
         }
-
-       
-
         
         let btn = document.getElementById('btn-send-request');
         let requestAnswer = document.getElementById('custom-request__answer');
@@ -131,7 +128,6 @@ function render_requests_custom_fields_meta_box($post)
                     return response.json();
                 })
                 .then(function(data) {
-                    console.log(data)
 
                     const resultHTML = createHTMLFromJSON(data);
                     requestAnswer.innerHTML = resultHTML;
