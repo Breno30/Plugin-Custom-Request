@@ -71,15 +71,7 @@ function render_requests_custom_fields_meta_box($post)
     <hr>
 
     <h3>Answer</h3>
-    <div class="custom-request__answer" id="custom-request__answer">
-        <div class="subnivel">
-            <div class="subnivel__line"> <button> Cool1:</button></div>
-            <div class="subnivel">
-                <div class="subnivel__line"><button> Cool2:</button><span>Oi</span></div>
-                <div class="subnivel__line"><button> Cool3:</button><span>Oi</span></div>
-            </div>
-        </div>
-    </div>
+    <div class="custom-request__answer" id="custom-request__answer"></div>
 
 
     <label for="access_path">Object access path:</label>
