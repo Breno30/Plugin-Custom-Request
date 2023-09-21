@@ -1,19 +1,22 @@
-function createHTMLFromJSON(obj) {
+function createHTMLFromJSON(obj, keyList) {
     let html = '<div class="subnivel">';
-    for (const key in obj) {
+
+    for (const key in obj) {      
         if (typeof obj[key] === 'object') {
+            keyList.push(key);
+
             html += `
                 <div class="subnivel__line">
-                    <button>${key}:</button>
+                    <button data-json-path>${key}:</button>
                 </div>
                 <div class="subnivel">
-                    ${createHTMLFromJSON(obj[key])}
+                    ${createHTMLFromJSON(obj[key], keyList)}
                 </div>
             `;
         } else {
             html += `
                 <div class="subnivel__line">
-                    <button>${key}:</button><span>${obj[key]}</span>
+                    <button onclick="setKeyPath('${keyList.join(',')},${key}')">${key}:</button><span>${obj[key]}</span>
                 </div>
             `;
         }
@@ -21,6 +24,10 @@ function createHTMLFromJSON(obj) {
     html += '</div>';
 
     return html;
+}
+
+function setKeyPath(keyPath) {
+    document.querySelector("#access_path").value = keyPath;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(function (data) {
 
-                const resultHTML = createHTMLFromJSON(data);
+                const resultHTML = createHTMLFromJSON(data, []);
                 requestAnswer.innerHTML = resultHTML;
             })
     })
