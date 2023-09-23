@@ -36,7 +36,6 @@ function create_requests_post_type()
         'menu_icon' => 'dashicons-admin-site-alt3',
         'supports' => [
             'title',
-            'custom-fields',
         ],
     ];
 
