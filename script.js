@@ -13,6 +13,8 @@ function createHTMLFromJSON(obj, keyList = []) {
                     ${createHTMLFromJSON(obj[key], keyList)}
                 </div>
             `;
+
+            keyList.pop(); // Remove the last key when moving back up the tree.
         } else {
             let finalKeyList = `${keyList.join(',')},${key}`;
 
