@@ -60,7 +60,7 @@ function render_requests_custom_fields_meta_box($post)
 ?>
     <h3>Request</h3>
     <label for="url">Url:</label>
-    <input type="text" id="url" name="url" value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
+    <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
     <br>
     <select name="method" id="method">
         <option value="get">GET</option>
@@ -77,7 +77,7 @@ function render_requests_custom_fields_meta_box($post)
     <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
 
     <label for="shortcut">Shortcut:</label>
-    <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
+    <input type="text" id="shortcut" name="shortcut" required value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
 
 <?php
 }
