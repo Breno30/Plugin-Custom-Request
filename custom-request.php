@@ -56,6 +56,7 @@ function render_requests_custom_fields_meta_box($post)
     $url_value = get_post_meta($post->ID, '_url_key', true);
     $access_path_value = get_post_meta($post->ID, '_access_path_key', true);
     $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
+    $payload_response_value = get_post_meta($post->ID, '_payload_response', true);
 ?>
     <h3>Request</h3>
     <label for="url">Url:</label>
@@ -71,10 +72,9 @@ function render_requests_custom_fields_meta_box($post)
 
     <h3>Answer</h3>
     <div class="custom-request__answer" id="custom-request__answer"></div>
+    <input type="hidden" id="payload_response" name="payload_response" value='<?php echo $payload_response_value; ?>'>
 
-
-    <label for="access_path">Object access path:</label>
-    <input type="text" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
+    <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
 
     <label for="shortcut">Shortcut:</label>
     <input type="text" id="shortcut" name="shortcut" value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
@@ -97,6 +97,11 @@ function save_requests_custom_fields($post_id)
     if (isset($_POST['shortcut'])) {
         $value = sanitize_text_field($_POST['shortcut']);
         update_post_meta($post_id, '_shortcut_key', $value);
+    }
+
+    if (isset($_POST['payload_response'])) {
+        $value = sanitize_text_field($_POST['payload_response']);
+        update_post_meta($post_id, '_payload_response', $value);
     }
 }
 
