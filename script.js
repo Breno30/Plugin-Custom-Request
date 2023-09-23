@@ -1,4 +1,4 @@
-function createHTMLFromJSON(obj, keyList) {
+function createHTMLFromJSON(obj, keyList = []) {
     let html = '<div class="subnivel">';
 
     for (const key in obj) {      
@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let btn = document.getElementById('btn-send-request');
     let requestAnswer = document.getElementById('custom-request__answer');
 
+    let initialData = document.getElementById('payload_response').value;
+
+    if (initialData) {
+        initialData = JSON.parse(initialData);
+        requestAnswer.innerHTML = createHTMLFromJSON(initialData);
+    }
+
     btn.addEventListener('click', (e) => {
         e.preventDefault();
 
@@ -44,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(function (data) {
-
-                const resultHTML = createHTMLFromJSON(data, []);
-                requestAnswer.innerHTML = resultHTML;
+                document.getElementById('payload_response').value = JSON.stringify(data);
+                requestAnswer.innerHTML = createHTMLFromJSON(data);
             })
     })
 
