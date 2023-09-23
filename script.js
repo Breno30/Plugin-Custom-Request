@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set Initial Value
     if (accessPathValue) {
-        document.querySelector(`[data-key-list="${accessPathValue}"]`).classList.add('active');
+        let buttonActive = document.querySelector(`[data-key-list="${accessPathValue}"]`);
+        if (buttonActive) buttonActive.classList.add('active');
     }
     
 
