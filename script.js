@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(function (data) {
-                initialDataValue = JSON.stringify(data);
+                initialData.value = JSON.stringify(data);
                 requestAnswer.innerHTML = createHTMLFromJSON(data);
             })
     })
