@@ -14,9 +14,11 @@ function createHTMLFromJSON(obj, keyList = []) {
                 </div>
             `;
         } else {
+            let finalKeyList = `${keyList.join(',')},${key}`;
+
             html += `
                 <div class="subnivel__line">
-                    <button onclick="setKeyPath('${keyList.join(',')},${key}')">${key}:</button><span>${obj[key]}</span>
+                    <button data-key-list='${finalKeyList}' onclick="setKeyPath('${finalKeyList}')">${key}:</button><span>${obj[key]}</span>
                 </div>
             `;
         }
@@ -34,12 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let btn = document.getElementById('btn-send-request');
     let requestAnswer = document.getElementById('custom-request__answer');
+    let initialData = document.getElementById('payload_response');
+    let accessPath = document.getElementById('access_path');
 
-    let initialData = document.getElementById('payload_response').value;
+    let initialDataValue = initialData.value;
+    let accessPathValue = accessPath.value;
 
-    if (initialData) {
-        initialData = JSON.parse(initialData);
-        requestAnswer.innerHTML = createHTMLFromJSON(initialData);
+    // Create Initial Json Structure
+    if (initialDataValue) {
+        initialDataValue = JSON.parse(initialDataValue);
+        requestAnswer.innerHTML = createHTMLFromJSON(initialDataValue);
     }
 
     btn.addEventListener('click', (e) => {
@@ -51,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(function (data) {
-                document.getElementById('payload_response').value = JSON.stringify(data);
+                initialDataValue = JSON.stringify(data);
                 requestAnswer.innerHTML = createHTMLFromJSON(data);
             })
     })
