@@ -34,7 +34,7 @@ function setKeyPath(keyPath) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    let btn = document.getElementById('btn-send-request');
+    let btnSendRequest = document.getElementById('btn-send-request');
     let requestAnswer = document.getElementById('custom-request__answer');
     let initialData = document.getElementById('payload_response');
     let accessPath = document.getElementById('access_path');
@@ -48,7 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnswer.innerHTML = createHTMLFromJSON(initialDataValue);
     }
 
-    btn.addEventListener('click', (e) => {
+    // Set Initial Value
+    if (accessPathValue) {
+        document.querySelector(`[data-key-list="${accessPathValue}"]`).classList.add('active');
+    }
+    
+
+    btnSendRequest.addEventListener('click', (e) => {
         e.preventDefault();
 
         let url = document.getElementById('url').value;
