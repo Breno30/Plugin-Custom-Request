@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/wp-content/plugins/Plugin-Custom-Request
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: your_database_user
+      WORDPRESS_DB_PASSWORD: your_database_password
+      WORDPRESS_DB_NAME: your_database_name
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: your_database_name
+      MYSQL_USER: your_database_user
+      MYSQL_PASSWORD: your_database_password
+    ports:
+      - "3307:3306"
+
