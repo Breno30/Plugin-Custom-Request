@@ -46,7 +46,7 @@ function add_requests_custom_fields_meta_box()
 {
     add_meta_box(
         'requests_custom_fields',
-        'Custom Fields',
+        'Request',
         'render_requests_custom_fields_meta_box',
     );
 }
@@ -58,7 +58,6 @@ function render_requests_custom_fields_meta_box($post)
     $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
     $payload_response_value = get_post_meta($post->ID, '_payload_response', true);
 ?>
-    <h3>Request</h3>
     <label for="url">Url:</label>
     <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
     <br>
