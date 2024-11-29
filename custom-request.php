@@ -35,7 +35,7 @@ function create_requests_post_type()
         'hierarchical' => false,
         'menu_icon' => 'dashicons-admin-site-alt3',
         'supports' => [
-            'title',
+            'revisions',
         ],
     ];
 
@@ -58,25 +58,23 @@ function render_requests_custom_fields_meta_box($post)
     $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
     $payload_response_value = get_post_meta($post->ID, '_payload_response', true);
 ?>
-    <label for="url">Url:</label>
-    <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" /><br>
-    <br>
-    <select name="method" id="method">
-        <option value="get">GET</option>
-        <option value="post">POST</option>
-    </select>
-    <br>
-    <button id="btn-send-request">Test Request</button>
-    <hr>
+    <h3>Shortcut</h3>
+    <input type="text" id="shortcut" name="shortcut" required value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
+
+    <h3>Data</h3>
+    <div class="pcr__data--wrapper">
+        <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" />
+        <select name="method" id="method">
+            <option value="get">GET</option>
+            <option value="post">POST</option>
+        </select>
+        <button id="btn-send-request">Test</button>
+    </div>
 
     <h3>Answer</h3>
     <div class="custom-request__answer" id="custom-request__answer"></div>
     <input type="hidden" id="payload_response" name="payload_response" value='<?php echo $payload_response_value; ?>'>
-
-    <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" /><br>
-
-    <label for="shortcut">Shortcut:</label>
-    <input type="text" id="shortcut" name="shortcut" required value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
+    <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" />
 
 <?php
 }
