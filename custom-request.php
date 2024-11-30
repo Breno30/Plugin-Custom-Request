@@ -102,36 +102,45 @@ function save_requests_custom_fields($post_id)
     }
 }
 
-function replace_shortcut_content($content)
-{
+function fetch_shortcut_value($shortcut) : string {
+    $shortcut = $shortcut[0];
+
     $args = [
         'post_type' => 'requests',
-        'posts_per_page' => -1,
-        'fields' => 'ids'
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+        'meta_query'     => [
+            [
+                'key'   => '_shortcut_key',
+                'value' => $shortcut,
+            ],
+        ]
     ];
 
     $custom_post_ids = get_posts($args);
+    $post_id = $custom_post_ids[0];
 
-    foreach ($custom_post_ids as $post_id) {
+    $url = get_post_meta($post_id, '_url_key', true);
+    $access_path = get_post_meta($post_id, '_access_path_key', true);
+    $access_path_list = explode(',', $access_path);
 
-        $url = get_post_meta($post_id, '_url_key', true);
-        $access_path = get_post_meta($post_id, '_access_path_key', true);
-        $access_path_list = explode(',', $access_path);
-        $shortcut = get_post_meta($post_id, '_shortcut_key', true);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $value = json_decode($response, true);
-        foreach ($access_path_list as $access_path_item) {
-            $value = $value[$access_path_item];
-        }
-
-        $content = str_replace($shortcut, $value, $content);
+    $value = json_decode($response, true);
+    foreach ($access_path_list as $access_path_item) {
+        $value = $value[$access_path_item];
     }
+
+    return $value;    
+}
+
+function replace_shortcut_content($content)
+{
+    $content = preg_replace_callback('/\[(.*?)\]/', 'fetch_shortcut_value', $content);
 
     return $content;
 }
