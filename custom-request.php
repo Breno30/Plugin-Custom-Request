@@ -105,6 +105,18 @@ function save_requests_custom_fields($post_id)
 function fetch_shortcut_value($shortcut) : string {
     $shortcut = $shortcut[0];
 
+    // Initialize Redis
+    $redis = new Redis();
+    $redis->connect('127.0.0.1', 6379);
+
+    $cache_key = "shortcut:{$shortcut}";
+
+    // Check if value exists in Redis
+    if ($redis->exists($cache_key)) {
+        // Fetch cached value
+        return $redis->get($cache_key);
+    }
+
     $args = [
         'post_type' => 'requests',
         'posts_per_page' => 1,
@@ -134,6 +146,9 @@ function fetch_shortcut_value($shortcut) : string {
     foreach ($access_path_list as $access_path_item) {
         $value = $value[$access_path_item];
     }
+
+    // Update redis cache
+    $redis->set($cache_key, $value, 60);
 
     return $value;    
 }
