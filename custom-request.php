@@ -107,7 +107,7 @@ function fetch_shortcut_value($shortcut) : string {
 
     // Initialize Redis
     $redis = new Redis();
-    $redis->connect('127.0.0.1', 6379);
+    $redis->connect('redis', 6379);
 
     $cache_key = "shortcut:{$shortcut}";
 
