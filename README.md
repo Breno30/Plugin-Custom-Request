@@ -9,6 +9,7 @@ Run </br>
 - [x] Create custom post
 - [x] Make request
 - [x] Replace shortcut by data
-- [ ] Make shortcut list block
-- [ ] Convert page for Alpine.js
+- [x] Implement Redis
+- [ ] Convert style to sass
+- [ ] Implement tests
 - [ ] Add feature to fetch data from time to time
