@@ -9,7 +9,9 @@ services:
       expose:
         - '6379'
   wordpress:
-    image: wordpress:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
