@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+  redis:
+      image: 'redis:alpine'
+      ports:
+        - '6379:6379'
+      restart: always
+      expose:
+        - '6379'
   wordpress:
     image: wordpress:latest
     ports:
@@ -12,7 +19,7 @@ services:
       WORDPRESS_DB_USER: your_database_user
       WORDPRESS_DB_PASSWORD: your_database_password
       WORDPRESS_DB_NAME: your_database_name
-
+      WORDPRESS_DEBUG: 'true'
   mysql:
     image: mysql:latest
     environment:
@@ -22,4 +29,3 @@ services:
       MYSQL_PASSWORD: your_database_password
     ports:
       - "3307:3306"
-
