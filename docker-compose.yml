@@ -12,6 +12,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: container_custom_wp
     ports:
       - "8080:80"
     volumes:
