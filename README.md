@@ -6,7 +6,7 @@ Run </br>
 `sudo docker-compose up`
 
 # Access Redis command line
-`sudo docker exec -it container_custom_wp bash`
+`sudo docker exec -it container_custom_wp redis-cli -h redis`
 
 # To-do list
 - [x] Create custom post
