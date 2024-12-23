@@ -1,21 +1,28 @@
 .custom-request__answer {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-family: "Courier New", monospace;
+    color: #333;
+    min-height: 50px;
 
-}
+    .subnivel {
+        padding-left: 15px;
+        gap: 5px;
+        display: grid;
 
-.custom-request__answer .subnivel {
-    padding-left: 15px;
-    gap: 5px;
-    display: grid;
-}
+        .subnivel__line {
+            display: flex;
+            gap: 10px;
 
-.custom-request__answer .subnivel .subnivel__line {
-    display: flex;
-    gap: 10px;
-}
-
-.custom-request__answer .subnivel .subnivel__line .active {
-    background: green;
-    color: white;
+            .active {
+                background: green;
+                color: white;
+            }
+        }
+    }
 }
 
 /* Labels */
@@ -46,22 +53,10 @@ button {
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
-}
 
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Answer Section */
-.custom-request__answer {
-    padding: 10px;
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-    font-family: "Courier New", monospace;
-    color: #333;
-    min-height: 50px;
+    &:hover {
+        background-color: #0056b3;
+    }
 }
 
 /* Hidden Inputs */
