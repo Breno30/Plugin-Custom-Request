@@ -102,14 +102,12 @@ function save_requests_custom_fields($post_id)
     }
 }
 
-function fetch_shortcut_value($shortcut) : string {
-    $shortcut = $shortcut[0];
-
+function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
     // Initialize Redis
     $redis = new Redis();
     $redis->connect('redis', 6379);
 
-    $cache_key = "shortcut:{$shortcut}";
+    $cache_key = "shortcut:{$shortcut_key}";
 
     // Check if value exists in Redis
     if ($redis->exists($cache_key)) {
@@ -117,23 +115,8 @@ function fetch_shortcut_value($shortcut) : string {
         return $redis->get($cache_key);
     }
 
-    $args = [
-        'post_type' => 'requests',
-        'posts_per_page' => 1,
-        'fields' => 'ids',
-        'meta_query'     => [
-            [
-                'key'   => '_shortcut_key',
-                'value' => $shortcut,
-            ],
-        ]
-    ];
-
-    $custom_post_ids = get_posts($args);
-    $post_id = $custom_post_ids[0];
-
-    $url = get_post_meta($post_id, '_url_key', true);
-    $access_path = get_post_meta($post_id, '_access_path_key', true);
+    $url = get_post_meta($custom_post_id, '_url_key', true);
+    $access_path = get_post_meta($custom_post_id, '_access_path_key', true);
     $access_path_list = explode(',', $access_path);
 
     $ch = curl_init();
@@ -150,17 +133,25 @@ function fetch_shortcut_value($shortcut) : string {
     // Update redis cache
     $redis->set($cache_key, $value, 60);
 
-    return $value;    
+    return $value; 
 }
 
-function replace_shortcut_content($content)
-{
-    $content = preg_replace_callback('/\[(.*?)\]/', 'fetch_shortcut_value', $content);
+$args = [
+    'post_type' => 'requests',
+    'posts_per_page' => 1,
+    'fields' => 'ids'
+];
 
-    return $content;
+$custom_post_ids = get_posts($args);
+
+foreach($custom_post_ids as $custom_post_id) {
+    $shortcut_key = get_post_meta($custom_post_id, '_shortcut_key', true);
+
+    add_shortcode($shortcut_key, fn() =>
+        fetch_shortcut_value($custom_post_id, $shortcut_key)
+    );
 }
 
-add_filter('the_content', 'replace_shortcut_content');
 add_action('add_meta_boxes', 'add_requests_custom_fields_meta_box');
 add_action('save_post_requests', 'save_requests_custom_fields');
 add_action('init', 'create_requests_post_type');
