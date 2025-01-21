@@ -64,10 +64,6 @@ function render_requests_custom_fields_meta_box($post)
     <h3>Data</h3>
     <div class="pcr__data--wrapper">
         <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" />
-        <select name="method" id="method">
-            <option value="get">GET</option>
-            <option value="post">POST</option>
-        </select>
         <button id="btn-send-request">Test</button>
     </div>
 
