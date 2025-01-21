@@ -2,7 +2,13 @@
 This plugin was made in order to fetch data from endpoints and display it on posts
 
 # Set-up
-Run </br>
+## Install dependencies
+`npm install`
+
+## Build style
+`npm run build`
+
+## Run
 `sudo docker-compose up`
 
 # Access Redis command line
