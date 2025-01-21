@@ -10,12 +10,12 @@
 
     .subnivel {
         padding-left: 15px;
-        gap: 5px;
+        gap: 4px;
         display: grid;
 
         .subnivel__line {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             align-items: center;
 
             .active {
@@ -32,7 +32,7 @@ label {
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 8px;
-    color: #333;
+    color: #000;
 }
 
 /* Inputs */
@@ -44,7 +44,7 @@ select {
 /* Button */
 button {
     display: inline-block;
-    padding: 8px;
+    padding:6px 8px;
     font-size: 14px;
     font-weight: bold;
     color: #fff;
