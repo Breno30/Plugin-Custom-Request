@@ -160,7 +160,7 @@ function enqueue_admin_styles()
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
 
 // Save shortcut as title
-function my_save_meta_function( $post_id, $post, $update )
+function my_save_meta_function( $post_id, $post )
 {
 	if ( get_post_type( $post_id ) !== 'requests' ) return;
 
@@ -175,7 +175,7 @@ function my_save_meta_function( $post_id, $post, $update )
     
     wp_update_post( $post_update );
 }
-add_action( 'save_post', 'my_save_meta_function', 99, 3 );
+add_action( 'save_post', 'my_save_meta_function', 99, 2 );
 
 // Render shortcut on title
 add_filter( 'the_title', 'do_shortcode' );
