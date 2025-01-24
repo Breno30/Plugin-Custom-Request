@@ -158,3 +158,6 @@ function enqueue_admin_styles()
     wp_enqueue_script('cusyom-request-script', plugin_dir_url(__FILE__) . 'script.js');
 }
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
+
+// Render shortcut on title
+add_filter( 'the_title', 'do_shortcode' );
