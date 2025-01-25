@@ -189,3 +189,13 @@ function add_request_current_value_column($columns) {
 
     return $columns;
 }
+
+add_action( 'manage_requests_posts_custom_column' , 'render_request_current_value_column', 10, 2 );
+function render_request_current_value_column( $column, $post_id ) {
+    switch ( $column ) {
+        case 'value' :
+            $shortcut_key = get_post_meta($post_id, '_shortcut_key', true);
+            echo do_shortcode("[$shortcut_key]");
+            break;
+    }
+}
