@@ -69,7 +69,7 @@ function render_requests_custom_fields_meta_box($post)
 
     <h3>Answer</h3>
     <div class="custom-request__answer" id="custom-request__answer"></div>
-    <input type="hidden" id="payload_response" name="payload_response" value='<?php echo $payload_response_value; ?>'>
+    <input type="hidden" id="payload_response" name="payload_response" value='<?php echo esc_html($payload_response_value); ?>'>
     <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" />
 
 <?php
