@@ -179,3 +179,23 @@ add_action( 'save_post', 'my_save_meta_function', 99, 2 );
 
 // Render shortcut on title
 add_filter( 'the_title', 'do_shortcode' );
+
+add_filter( 'manage_requests_posts_columns', 'add_request_current_value_column' );
+function add_request_current_value_column($columns) {
+    $dateColumn = $columns['date'];
+    unset( $columns['date'] );
+    $columns['value'] = 'Value';
+    $columns['date'] = $dateColumn;
+
+    return $columns;
+}
+
+add_action( 'manage_requests_posts_custom_column' , 'render_request_current_value_column', 10, 2 );
+function render_request_current_value_column( $column, $post_id ) {
+    switch ( $column ) {
+        case 'value' :
+            $shortcut_key = get_post_meta($post_id, '_shortcut_key', true);
+            echo do_shortcode("[$shortcut_key]");
+            break;
+    }
+}
