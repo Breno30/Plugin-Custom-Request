@@ -1,4 +1,12 @@
-# Context
+=== Custom Request ===
+
+Version: 1.0.0
+Requires PHP: 7.4
+Stable tag: 1.0.0
+Tested up to: 6.7.1
+License: GPLv2 or later
+
+# Custom Request
 This plugin was made in order to fetch data from endpoints and display it on posts
 
 # Set-up

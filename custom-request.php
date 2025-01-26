@@ -2,7 +2,11 @@
 /*
 Plugin Name: Custom Request
 Description: Create a custom post type for Requests.
-Version: 1.0
+Version: 1.0.0
+Requires PHP: 7.4
+Stable tag: 1.0.0
+Tested up to: 6.7.1
+License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
@@ -71,29 +75,35 @@ function render_requests_custom_fields_meta_box($post)
     <div class="custom-request__answer" id="custom-request__answer"></div>
     <input type="hidden" id="payload_response" name="payload_response" value='<?php echo esc_html($payload_response_value); ?>'>
     <input type="hidden" id="access_path" name="access_path" value="<?php echo esc_attr($access_path_value); ?>" style="width: 100%;" />
-
+    <?php wp_nonce_field('requests_custom_fields', 'my_nonce'); ?>
 <?php
 }
 
 function save_requests_custom_fields($post_id)
 {
+    $nonce = isset($_POST['my_nonce'])? sanitize_text_field(wp_unslash($_POST['my_nonce'])): null;
+
+    if (!isset($nonce) || !wp_verify_nonce($nonce , 'requests_custom_fields' )) {
+        return;
+    }
+
     if (isset($_POST['url'])) {
-        $url_value = sanitize_text_field($_POST['url']);
+        $url_value = sanitize_text_field(wp_unslash($_POST['url']));
         update_post_meta($post_id, '_url_key', $url_value);
     }
 
     if (isset($_POST['access_path'])) {
-        $value = sanitize_text_field($_POST['access_path']);
+        $value = sanitize_text_field(wp_unslash($_POST['access_path']));
         update_post_meta($post_id, '_access_path_key', $value);
     }
 
     if (isset($_POST['shortcut'])) {
-        $value = sanitize_text_field($_POST['shortcut']);
+        $value = sanitize_text_field(wp_unslash($_POST['shortcut']));
         update_post_meta($post_id, '_shortcut_key', $value);
     }
 
     if (isset($_POST['payload_response'])) {
-        $value = sanitize_text_field($_POST['payload_response']);
+        $value = sanitize_text_field(wp_unslash($_POST['payload_response']));
         update_post_meta($post_id, '_payload_response', $value);
     }
 }
@@ -115,13 +125,11 @@ function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
     $access_path = get_post_meta($custom_post_id, '_access_path_key', true);
     $access_path_list = explode(',', $access_path);
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    $response = wp_remote_get($url);
 
-    $value = json_decode($response, true);
+    $value = json_decode($response['body'], true);
+
+    // $value = json_decode($response, true);
     foreach ($access_path_list as $access_path_item) {
         $value = $value[$access_path_item];
     }
@@ -154,8 +162,9 @@ add_action('init', 'create_requests_post_type');
 
 function enqueue_admin_styles()
 {
-    wp_enqueue_style('cusyom-request-style', plugin_dir_url(__FILE__) . 'style.css');
-    wp_enqueue_script('cusyom-request-script', plugin_dir_url(__FILE__) . 'script.js');
+    $version = '1.0.0';
+    wp_enqueue_style('cusyom-request-style', plugin_dir_url(__FILE__) . 'style.css', [], $version);
+    wp_enqueue_script('cusyom-request-script', plugin_dir_url(__FILE__) . 'script.js', [], $version, true);
 }
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
 
