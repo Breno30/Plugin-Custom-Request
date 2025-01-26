@@ -2,7 +2,11 @@
 /*
 Plugin Name: Custom Request
 Description: Create a custom post type for Requests.
-Version: 1.0
+Version: 1.0.0
+Requires PHP: 7.4
+Stable tag: 1.0.0
+Tested up to: 6.7.1
+License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
