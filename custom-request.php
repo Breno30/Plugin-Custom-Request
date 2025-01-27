@@ -10,21 +10,6 @@ License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
-
-    // // Stop the plugin from loading
-    // add_action('admin_notices', function () {
-    //     echo '<div class="notice notice-error is-dismissible">
-    //             <p><strong>Plugin Deactivated:</strong> The Redis PHP extension is not installed or enabled. This plugin cannot function without it.</p>
-    //           </div>';
-    // });
-
-    // // Deactivate the plugin
-    // add_action('admin_init', function () {
-    //     deactivate_plugins(plugin_basename(__FILE__));
-    // });
-
-
-
 function create_requests_post_type()
 {
     $labels = [
