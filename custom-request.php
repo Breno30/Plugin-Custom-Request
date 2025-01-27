@@ -138,7 +138,6 @@ function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
 
     $value = json_decode($response['body'], true);
 
-    // $value = json_decode($response, true);
     foreach ($access_path_list as $access_path_item) {
         $value = $value[$access_path_item];
     }
