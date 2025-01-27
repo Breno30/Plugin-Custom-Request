@@ -188,6 +188,7 @@ add_action( 'save_post', 'my_save_meta_function', 99, 2 );
 
 // Render shortcut on title
 add_filter( 'the_title', 'do_shortcode' );
+add_filter( 'pre_get_document_title', 'get_the_title' );
 
 add_filter( 'manage_requests_posts_columns', 'add_request_current_value_column' );
 function add_request_current_value_column($columns) {
