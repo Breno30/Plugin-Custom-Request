@@ -10,6 +10,21 @@ License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
+
+    // // Stop the plugin from loading
+    // add_action('admin_notices', function () {
+    //     echo '<div class="notice notice-error is-dismissible">
+    //             <p><strong>Plugin Deactivated:</strong> The Redis PHP extension is not installed or enabled. This plugin cannot function without it.</p>
+    //           </div>';
+    // });
+
+    // // Deactivate the plugin
+    // add_action('admin_init', function () {
+    //     deactivate_plugins(plugin_basename(__FILE__));
+    // });
+
+
+
 function create_requests_post_type()
 {
     $labels = [
@@ -111,7 +126,16 @@ function save_requests_custom_fields($post_id)
 function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
     // Initialize Redis
     $redis = new Redis();
-    $redis->connect('redis', 6379);
+
+    if (!defined('WP_REDIS_HOST')) {
+        define('WP_REDIS_HOST', '127.0.0.1'); // Default to localhost
+    }
+
+    if (!defined('WP_REDIS_PORT')) {
+        define('WP_REDIS_PORT', 6379); // Default Redis port
+    }
+
+    $redis->connect(WP_REDIS_HOST, WP_REDIS_PORT);
 
     $cache_key = "shortcut:{$shortcut_key}";
 
