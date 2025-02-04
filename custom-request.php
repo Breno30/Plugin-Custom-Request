@@ -73,7 +73,7 @@ function render_requests_custom_fields_meta_box($post)
     <h3>Shortcode</h3>
     <input type="text" id="shortcode" name="shortcode" required value="<?php echo esc_attr($shortcode_value); ?>" style="width: 100%;" /><br>
 
-    <h3>Data</h3>
+    <h3>Url</h3>
     <div class="pcr__data--wrapper">
         <input type="text" id="url" name="url" required value="<?php echo esc_attr($url_value); ?>" style="width: 100%;" />
         <button id="btn-send-request">Test</button>
