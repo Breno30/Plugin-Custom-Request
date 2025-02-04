@@ -25,7 +25,7 @@ This plugin was made in order to fetch data from endpoints and display it on pos
 # To-do list
 - [x] Create custom post
 - [x] Make request
-- [x] Replace shortcut by data
+- [x] Replace shortcode by data
 - [x] Implement Redis
 - [x] Convert style to sass
 - [ ] Implement tests

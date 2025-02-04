@@ -67,11 +67,11 @@ function render_requests_custom_fields_meta_box($post)
 {
     $url_value = get_post_meta($post->ID, '_url_key', true);
     $access_path_value = get_post_meta($post->ID, '_access_path_key', true);
-    $shortcut_value = get_post_meta($post->ID, '_shortcut_key', true);
+    $shortcode_value = get_post_meta($post->ID, '_shortcode_key', true);
     $payload_response_value = get_post_meta($post->ID, '_payload_response', true);
 ?>
-    <h3>Shortcut</h3>
-    <input type="text" id="shortcut" name="shortcut" required value="<?php echo esc_attr($shortcut_value); ?>" style="width: 100%;" /><br>
+    <h3>Shortcode</h3>
+    <input type="text" id="shortcode" name="shortcode" required value="<?php echo esc_attr($shortcode_value); ?>" style="width: 100%;" /><br>
 
     <h3>Data</h3>
     <div class="pcr__data--wrapper">
@@ -105,9 +105,9 @@ function save_requests_custom_fields($post_id)
         update_post_meta($post_id, '_access_path_key', $value);
     }
 
-    if (isset($_POST['shortcut'])) {
-        $value = sanitize_text_field(wp_unslash($_POST['shortcut']));
-        update_post_meta($post_id, '_shortcut_key', $value);
+    if (isset($_POST['shortcode'])) {
+        $value = sanitize_text_field(wp_unslash($_POST['shortcode']));
+        update_post_meta($post_id, '_shortcode_key', $value);
     }
 
     if (isset($_POST['payload_response'])) {
@@ -116,7 +116,7 @@ function save_requests_custom_fields($post_id)
     }
 }
 
-function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
+function fetch_shortcode_value($custom_post_id, $shortcode_key) : string {
     // Initialize Redis
     $redis = new Redis();
 
@@ -130,7 +130,7 @@ function fetch_shortcut_value($custom_post_id, $shortcut_key) : string {
 
     $redis->connect(WP_REDIS_HOST, WP_REDIS_PORT);
 
-    $cache_key = "shortcut:{$shortcut_key}";
+    $cache_key = "shortcode:{$shortcode_key}";
 
     // Check if value exists in Redis
     if ($redis->exists($cache_key)) {
@@ -165,10 +165,10 @@ $args = [
 $custom_post_ids = get_posts($args);
 
 foreach($custom_post_ids as $custom_post_id) {
-    $shortcut_key = get_post_meta($custom_post_id, '_shortcut_key', true);
+    $shortcode_key = get_post_meta($custom_post_id, '_shortcode_key', true);
 
-    add_shortcode($shortcut_key, fn() =>
-        fetch_shortcut_value($custom_post_id, $shortcut_key)
+    add_shortcode($shortcode_key, fn() =>
+        fetch_shortcode_value($custom_post_id, $shortcode_key)
     );
 }
 
@@ -184,25 +184,25 @@ function enqueue_admin_styles()
 }
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
 
-// Save shortcut as title
+// Save shortcode as title
 function my_save_meta_function( $post_id, $post )
 {
 	if ( get_post_type( $post_id ) !== 'requests' ) return;
 
-    $shortcut_key = get_post_meta($post_id, '_shortcut_key', true);
+    $shortcode_key = get_post_meta($post_id, '_shortcode_key', true);
 
-    if ($shortcut_key == $post->post_title) return;
+    if ($shortcode_key == $post->post_title) return;
 
     $post_update = array(
         'ID'         => $post_id,
-        'post_title' => $shortcut_key
+        'post_title' => $shortcode_key
     );
     
     wp_update_post( $post_update );
 }
 add_action( 'save_post', 'my_save_meta_function', 99, 2 );
 
-// Render shortcut on title
+// Render shortcode on title
 add_filter( 'the_title', 'do_shortcode' );
 add_filter( 'pre_get_document_title', 'get_the_title' );
 
@@ -220,8 +220,8 @@ add_action( 'manage_requests_posts_custom_column' , 'render_request_current_valu
 function render_request_current_value_column( $column, $post_id ) {
     switch ( $column ) {
         case 'value' :
-            $shortcut_key = get_post_meta($post_id, '_shortcut_key', true);
-            echo do_shortcode("[$shortcut_key]");
+            $shortcode_key = get_post_meta($post_id, '_shortcode_key', true);
+            echo do_shortcode("[$shortcode_key]");
             break;
     }
 }
