@@ -167,6 +167,8 @@ $custom_post_ids = get_posts($args);
 foreach($custom_post_ids as $custom_post_id) {
     $shortcode_key = get_post_meta($custom_post_id, '_shortcode_key', true);
 
+    if ($shortcode_key == '') continue;
+
     add_shortcode($shortcode_key, fn() =>
         fetch_shortcode_value($custom_post_id, $shortcode_key)
     );
