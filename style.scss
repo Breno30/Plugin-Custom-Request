@@ -1,3 +1,7 @@
+#btn-send-request {
+    @extend .btn--highlight
+}
+
 .custom-request__answer {
     padding: 10px;
     background-color: #f1f1f1;
@@ -17,6 +21,13 @@
             display: flex;
             gap: 4px;
             align-items: center;
+            background: gainsboro;
+            width: fit-content;
+            padding: 6px 8px;
+
+            button {
+                @extend .btn--highlight
+            }
 
             .active {
                 background: green;
@@ -42,7 +53,7 @@ select {
 }
 
 /* Button */
-button {
+.btn--highlight {
     display: inline-block;
     padding:6px 8px;
     font-size: 14px;

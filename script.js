@@ -6,9 +6,7 @@ function createHTMLFromJSON(obj, keyList = []) {
             keyList.push(key);
 
             html += `
-                <div class="subnivel__line">
-                    <button data-json-path>${key}</button>
-                </div>
+                <div class="subnivel__line">${key}</div>
                 <div class="subnivel">
                     ${createHTMLFromJSON(obj[key], keyList)}
                 </div>
