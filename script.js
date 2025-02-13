@@ -32,6 +32,30 @@ function setKeyPath(keyPath) {
     document.querySelector("#access_path").value = keyPath;
 }
 
+function validateCustomFields(event) {
+
+    const shortcode = document.getElementById("shortcode");
+    if (!shortcode || shortcode.value.trim() === "") {
+        event.preventDefault(); 
+        alert("Please enter a valid shortcode.");
+        return;
+    }
+    
+    const url = document.getElementById("url");
+    if (!url || url.value.trim() === "") {
+        event.preventDefault();
+        alert("Please enter a valid URL.");
+        return;
+    }
+
+    const accessPath = document.getElementById("access_path");
+    if (!accessPath || accessPath.value.trim() === "") {
+        event.preventDefault();
+        alert("Please select one of the answers listed.");
+        return;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     let btnSendRequest = document.getElementById('btn-send-request');
@@ -68,5 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnswer.innerHTML = createHTMLFromJSON(data);
             })
     })
+
+    // validate post data
+    const publishButton = document.getElementById("publish");
+    const saveButton = document.getElementById("save-post");
+
+    if (publishButton) publishButton.addEventListener("click", validateCustomFields);
+    if (saveButton) saveButton.addEventListener("click", validateCustomFields);
 
 })
