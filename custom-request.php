@@ -160,7 +160,7 @@ function fetch_shortcode_value($custom_post_id, $shortcode_key) : string {
 
 $args = [
     'post_type' => 'requests',
-    'posts_per_page' => 1,
+    'posts_per_page' => -1,
     'fields' => 'ids'
 ];
 
