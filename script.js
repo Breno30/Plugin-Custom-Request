@@ -51,14 +51,33 @@ function validateCustomFields(event) {
     const accessPath = document.getElementById("access_path");
     if (!accessPath || accessPath.value.trim() === "") {
         event.preventDefault();
+        handleSendRequest();
         alert("Please select one of the answers listed.");
         return;
     }
 }
 
+function handleSendRequest(event = null) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    let url = document.getElementById('url').value;
+    let initialData = document.getElementById('payload_response');
+    let requestAnswer = document.getElementById('custom-request__answer');
+
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            initialData.value = JSON.stringify(data);
+            requestAnswer.innerHTML = createHTMLFromJSON(data);
+        })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    let btnSendRequest = document.getElementById('btn-send-request');
     let requestAnswer = document.getElementById('custom-request__answer');
     let initialData = document.getElementById('payload_response');
     let accessPath = document.getElementById('access_path');
@@ -77,21 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let buttonActive = document.querySelector(`[data-key-list="${accessPathValue}"]`);
         if (buttonActive) buttonActive.classList.add('active');
     }
-    
 
-    btnSendRequest.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        let url = document.getElementById('url').value;
-        fetch(url)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                initialData.value = JSON.stringify(data);
-                requestAnswer.innerHTML = createHTMLFromJSON(data);
-            })
-    })
+    // handle send request
+    let btnSendRequest = document.getElementById('btn-send-request');
+    btnSendRequest.addEventListener('click', handleSendRequest);
 
     // validate post data
     const publishButton = document.getElementById("publish");
