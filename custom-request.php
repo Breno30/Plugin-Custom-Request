@@ -214,7 +214,7 @@ add_filter( 'manage_requests_posts_columns', 'add_request_current_value_column' 
 function add_request_current_value_column($columns) {
     $dateColumn = $columns['date'];
     unset( $columns['date'] );
-    $columns['value'] = 'Value';
+    $columns['value'] = 'Shortcode -> Value';
     $columns['date'] = $dateColumn;
 
     return $columns;
@@ -225,7 +225,7 @@ function render_request_current_value_column( $column, $post_id ) {
     switch ( $column ) {
         case 'value' :
             $shortcode_key = get_post_meta($post_id, '_shortcode_key', true);
-            echo fetch_shortcode_value($post_id, $shortcode_key);
+            echo '[' . $shortcode_key .'] -> '. fetch_shortcode_value($post_id, $shortcode_key);
             break;
     }
 }
