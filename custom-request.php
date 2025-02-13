@@ -22,7 +22,7 @@ function create_requests_post_type()
 {
     $labels = [
         'name' => 'Requests',
-        'singular_name' => 'Request',
+        'singular_name' => 'Request', 
         'add_new' => 'Add New',
         'add_new_item' => 'Add New Request',
         'edit_item' => 'Edit Request',
@@ -39,10 +39,10 @@ function create_requests_post_type()
     $args = [
         'labels' => $labels,
         'public' => true,
-        'has_archive' => true,
-        'publicly_queryable' => true,
-        'query_var' => true,
-        'rewrite' => ['slug' => 'requests'],
+        'has_archive' => false,
+        'publicly_queryable' => false,
+        'query_var' => false,
+        'rewrite' => false,
         'capability_type' => 'post',
         'hierarchical' => false,
         'menu_icon' => 'dashicons-admin-site-alt3',
