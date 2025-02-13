@@ -229,3 +229,14 @@ function render_request_current_value_column( $column, $post_id ) {
             break;
     }
 }
+
+add_action('transition_post_status', 'prevent_draft_status', 10, 3);
+function prevent_draft_status($new_status, $old_status, $post) {
+    // If post is draft, set as publish
+    if ($new_status === 'draft' && $post->post_type === 'requests') {
+        wp_update_post(array(
+            'ID' => $post->ID,
+            'post_status' => 'publish'
+        ));
+    }
+}
