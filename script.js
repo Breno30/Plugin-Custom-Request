@@ -58,54 +58,40 @@ function validateCustomFields(event) {
 }
 
 function handleSendRequest(event = null) {
-    if (event) {
-        event.preventDefault();
-    }
+    if (event) event.preventDefault();
 
-    let url = document.getElementById('url').value;
-    let initialData = document.getElementById('payload_response');
-    let requestAnswer = document.getElementById('custom-request__answer');
+    const url = document.getElementById('url').value;
+    const initialData = document.getElementById('payload_response');
+    const requestAnswer = document.getElementById('custom-request__answer');
 
     fetch(url)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
+        .then(response => response.json())
+        .then(data => {
             initialData.value = JSON.stringify(data);
             requestAnswer.innerHTML = createHTMLFromJSON(data);
-        })
+        });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const requestAnswer = document.getElementById('custom-request__answer');
+    const initialData = document.getElementById('payload_response');
+    const accessPath = document.getElementById('access_path');
+    const initialDataValue = initialData.value;
+    const accessPathValue = accessPath.value;
 
-    let requestAnswer = document.getElementById('custom-request__answer');
-    let initialData = document.getElementById('payload_response');
-    let accessPath = document.getElementById('access_path');
-
-    let initialDataValue = initialData.value;
-    let accessPathValue = accessPath.value;
-
-    // Create Initial Json Structure
     if (initialDataValue) {
-        initialDataValue = JSON.parse(initialDataValue);
-        requestAnswer.innerHTML = createHTMLFromJSON(initialDataValue);
+        requestAnswer.innerHTML = createHTMLFromJSON(JSON.parse(initialDataValue));
     }
 
-    // Set Initial Value
     if (accessPathValue) {
-        let buttonActive = document.querySelector(`[data-key-list="${accessPathValue}"]`);
+        const buttonActive = document.querySelector(`[data-key-list="${accessPathValue}"]`);
         if (buttonActive) buttonActive.classList.add('active');
     }
 
-    // handle send request
-    let btnSendRequest = document.getElementById('btn-send-request');
-    btnSendRequest.addEventListener('click', handleSendRequest);
+    document.getElementById('btn-send-request').addEventListener('click', handleSendRequest);
 
-    // validate post data
-    const publishButton = document.getElementById("publish");
-    const saveButton = document.getElementById("save-post");
-
-    if (publishButton) publishButton.addEventListener("click", validateCustomFields);
-    if (saveButton) saveButton.addEventListener("click", validateCustomFields);
-
-})
+    ['publish', 'save-post'].forEach(id => {
+        const button = document.getElementById(id);
+        if (button) button.addEventListener('click', validateCustomFields);
+    });
+});
