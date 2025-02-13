@@ -147,6 +147,8 @@ function fetch_shortcode_value($custom_post_id, $shortcode_key) : string {
     $value = json_decode($response['body'], true);
 
     foreach ($access_path_list as $access_path_item) {
+        if($access_path_item == '') continue;
+
         $value = $value[$access_path_item];
     }
 
