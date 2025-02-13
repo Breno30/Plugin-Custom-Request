@@ -225,7 +225,7 @@ function render_request_current_value_column( $column, $post_id ) {
     switch ( $column ) {
         case 'value' :
             $shortcode_key = get_post_meta($post_id, '_shortcode_key', true);
-            echo do_shortcode("[$shortcode_key]");
+            echo fetch_shortcode_value($post_id, $shortcode_key);
             break;
     }
 }
