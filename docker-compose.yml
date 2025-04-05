@@ -26,5 +26,3 @@ services:
       MYSQL_DATABASE: your_database_name
       MYSQL_USER: your_database_user
       MYSQL_PASSWORD: your_database_password
-    ports:
-      - "3307:3306"
