@@ -10,14 +10,6 @@ License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
-add_action( 'activate_plugin', 'custom_request_check_redis_extension' , 10);
-
-function custom_request_check_redis_extension(){
-    if (!extension_loaded('redis')) {
-       wp_die( '<p><strong>Plugin Deactivated:</strong> The Redis PHP extension is not installed or enabled. This plugin cannot function without it.</p><a href="/wp-admin/plugins.php">Reload</a>' );
-    }
-}
-
 function create_requests_post_type()
 {
     $labels = [
