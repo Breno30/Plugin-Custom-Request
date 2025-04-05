@@ -10,14 +10,6 @@ License: GPLv2 or later
 Author: Breno do Nascimento Silva
 */
 
-add_action( 'activate_plugin', 'custom_request_check_redis_extension' , 10);
-
-function custom_request_check_redis_extension(){
-    if (!extension_loaded('redis')) {
-       wp_die( '<p><strong>Plugin Deactivated:</strong> The Redis PHP extension is not installed or enabled. This plugin cannot function without it.</p><a href="/wp-admin/plugins.php">Reload</a>' );
-    }
-}
-
 function create_requests_post_type()
 {
     $labels = [
@@ -117,25 +109,12 @@ function save_requests_custom_fields($post_id)
 }
 
 function fetch_shortcode_value($custom_post_id, $shortcode_key) : string {
-    // Initialize Redis
-    $redis = new Redis();
-
-    if (!defined('WP_REDIS_HOST')) {
-        define('WP_REDIS_HOST', '127.0.0.1'); // Default to localhost
-    }
-
-    if (!defined('WP_REDIS_PORT')) {
-        define('WP_REDIS_PORT', 6379); // Default Redis port
-    }
-
-    $redis->connect(WP_REDIS_HOST, WP_REDIS_PORT);
-
     $cache_key = "shortcode:{$shortcode_key}";
-
-    // Check if value exists in Redis
-    if ($redis->exists($cache_key)) {
-        // Fetch cached value
-        return $redis->get($cache_key);
+    
+    // Check WP Cache first
+    $cached_value = wp_cache_get($cache_key);
+    if ($cached_value !== false) {
+        return $cached_value;
     }
 
     $url = get_post_meta($custom_post_id, '_url_key', true);
@@ -152,10 +131,10 @@ function fetch_shortcode_value($custom_post_id, $shortcode_key) : string {
         $value = $value[$access_path_item];
     }
 
-    // Update redis cache
-    $redis->set($cache_key, $value, 60);
+    // Set WP Cache
+    wp_cache_set($cache_key, $value, '', 60);
 
-    return $value; 
+    return $value;
 }
 
 $args = [
