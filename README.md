@@ -19,9 +19,6 @@ This plugin was made in order to fetch data from endpoints and display it on pos
 ## Run
 `sudo docker-compose up`
 
-# Access Redis command line
-`sudo docker exec -it container_custom_wp redis-cli -h redis`
-
 # To-do list
 - [x] Create custom post
 - [x] Make request
